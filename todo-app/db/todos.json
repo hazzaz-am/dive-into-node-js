@@ -1,0 +1,20 @@
+[
+  {
+    "title": "typescript",
+    "body": "typescript basic"
+  },
+  {
+    "title": "node",
+    "body": "node basic"
+  },
+  {
+    "title": "prisma",
+    "body": "prisma basic",
+    "createdAt": "6/1/2025, 8:51:31 AM"
+  },
+  {
+    "title": "postgres",
+    "body": "postgres basic",
+    "createdAt": "6/1/2025, 8:56:00 AM"
+  }
+]
