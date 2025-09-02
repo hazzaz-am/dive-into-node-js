@@ -1,0 +1,24 @@
+GET http://localhost:8000/health
+
+###
+
+POST http://localhost:8000
+Content-Type: application/json
+
+{
+  "name": "Mushfiq",
+  "country": "BD",
+  "level": 1
+}
+
+###
+
+GET http://localhost:8000
+
+###
+
+GET http://localhost:8000/Fx1VicbX5
+
+###
+
+GET http://localhost:8000/44Ve0-v37
