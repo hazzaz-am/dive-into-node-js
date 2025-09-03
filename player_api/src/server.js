@@ -11,19 +11,83 @@ app.use(cors());
 app.use(morgan("dev"));
 app.use(express.json());
 
+app.delete("/:id", async (req, res) => {
+	const id = req.params.id;
+	const data = await fs.readFile(dbLocation);
+	const players = JSON.parse(data);
+	const player = players.find((player) => player.id === id);
+
+	if (!player) {
+		return res.status(400).json({
+			message: "Player not found",
+		});
+	}
+	const newPlayers = players.filter((pl) => pl.id !== player.id);
+	await fs.writeFile(dbLocation, JSON.stringify(newPlayers));
+	res.status(203).send();
+});
+
+app.put("/:id", async (req, res) => {
+	const id = req.params.id;
+	const data = await fs.readFile(dbLocation);
+	const players = JSON.parse(data);
+	let player = players.find((player) => player.id === id);
+
+	if (!player) {
+		player = {
+			id: shortId.generate(),
+			...req.body,
+		};
+		players.push(player);
+	} else {
+		player.name = req.body.name || player.name;
+		player.country = req.body.country || player.country;
+		player.level = req.body.level || player.level;
+	}
+
+	await fs.writeFile(dbLocation, JSON.stringify(players));
+	res.status(200).json(player);
+});
+
+app.patch("/:id", async (req, res) => {
+	const id = req.params.id;
+	const data = await fs.readFile(dbLocation);
+	const players = JSON.parse(data);
+	const player = players.find((player) => player.id === id);
+
+	if (!player) {
+		return res.status(404).json({
+			message: "Plater not found",
+		});
+	}
+
+	if (req.body.id) {
+		return res.status(400).json({
+			message: "You can't change your ID",
+		});
+	}
+
+	player.name = req.body.name || player.name;
+	player.country = req.body.country || player.country;
+	player.level = req.body.level || player.level;
+
+	await fs.writeFile(dbLocation, JSON.stringify(players));
+	res.status(200).json(player);
+});
+
 app.get("/:id", async (req, res) => {
 	const id = req.params.id;
 	const data = await fs.readFile(dbLocation);
 	const players = JSON.parse(data);
-	const player = players.find((player) => player.id === id)
+	const player = players.find((player) => player.id === id);
 
 	if (!player) {
 		return res.status(404).json({
-			message: "Player not found"
-		})
+			message: "Player not found",
+		});
 	}
 
-	res.status(200).json(player)
+	res.status(200).json(player);
 });
 
 app.post("/", async (req, res) => {

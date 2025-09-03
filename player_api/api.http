@@ -17,8 +17,28 @@ GET http://localhost:8000
 
 ###
 
-GET http://localhost:8000/Fx1VicbX5
+GET http://localhost:8000/Fx1VicbX
 
 ###
 
-GET http://localhost:8000/44Ve0-v37
+PATCH http://localhost:8000/Fx1VicbX5
+Content-Type: application/json
+
+{
+  "name": "Mushfiqur Rahman",
+  "level": 5
+}
+
+###
+
+PUT http://localhost:8000/Fx1VicbX
+Content-Type: application/json
+
+{
+  "name": "Chota Vim"
+}
+
+
+###
+
+DELETE  http://localhost:8000/o0v8Zwb
