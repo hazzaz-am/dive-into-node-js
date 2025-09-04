@@ -170,6 +170,6 @@ class TicketCollection {
 	}
 }
 
-const collection = new TicketCollection();
+const TicketsCollection = new TicketCollection();
 
-module.exports = collection;
+module.exports = TicketsCollection;
