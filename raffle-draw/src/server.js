@@ -5,6 +5,7 @@ const morgan = require("morgan");
 const app = express();
 
 app.use([morgan("dev"), cors(), express.json()]);
+app.use("/api/v1/tickets", require("./route"));
 
 app.get("/health", (_req, res) => {
 	res.status(200).json({
@@ -19,6 +20,8 @@ app.use((_req, _res, next) => {
 });
 
 app.use((error, req, res, next) => {
+	console.log("Error: ", error);
+
 	if (error.status) {
 		return res.status(error.status).json({
 			message: error.message,

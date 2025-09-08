@@ -5,7 +5,9 @@ const tickets = Symbol("tickets");
 
 class TicketCollection {
 	constructor() {
-		this[tickets] = [];
+		(async function () {
+			this[tickets] = await readFile();
+		}).call(this);
 	}
 
 	/**
@@ -17,6 +19,7 @@ class TicketCollection {
 	createNewTicket(username, price) {
 		const ticket = new Ticket(username, price);
 		this[tickets].push(ticket);
+		writeFile(this[tickets]);
 		return ticket;
 	}
 
@@ -28,12 +31,12 @@ class TicketCollection {
 	 * @returns {Ticket[]}
 	 */
 	createBulkTickets(username, price, quantity) {
-		let resutl = [];
+		let result = [];
 		for (let i = 0; i < quantity; i++) {
 			const ticket = this.createNewTicket(username, price);
-			resutl.push(ticket);
+			result.push(ticket);
 		}
-		return resutl;
+		return result;
 	}
 
 	/**
@@ -83,8 +86,11 @@ class TicketCollection {
 	 */
 	updateTicket(ticketId, ticketBody) {
 		const ticket = this.findById(ticketId);
-		ticket.username = ticketBody.username ?? ticket.username;
-		ticket.price = ticketBody.price ?? ticket.price;
+		if (ticket) {
+			ticket.username = ticketBody.username ?? ticket.username;
+			ticket.price = ticketBody.price ?? ticket.price;
+			writeFile(this[tickets]);
+		}
 
 		return ticket;
 	}
@@ -97,13 +103,14 @@ class TicketCollection {
 	 */
 	updateBulkTickets(username, ticketBody) {
 		const userTickets = this.findTicketsByUsername(username);
-
+		console.log(username)
 		const updatedTickets = userTickets.map(
 			/**
 			 * @param {Ticket} ticket
 			 */
 			(ticket) => this.updateTicket(ticket.id, ticketBody)
 		);
+		writeFile(this[tickets]);
 		return updatedTickets;
 	}
 
@@ -124,6 +131,7 @@ class TicketCollection {
 			return false;
 		} else {
 			this[tickets].splice(index, 1);
+			writeFile(this[tickets]);
 			return true;
 		}
 	}
@@ -135,13 +143,14 @@ class TicketCollection {
 	 */
 	deleteBulkTickets(username) {
 		const userTickets = this.findTicketsByUsername(username);
-		const deltedData = userTickets.map(
+		const deletedData = userTickets.map(
 			/**
 			 * @param {Ticket} ticket
 			 */
 			(ticket) => this.deleteTicketById(ticket.id)
 		);
-		return deltedData;
+		writeFile(this[tickets]);
+		return deletedData;
 	}
 
 	/**
@@ -150,23 +159,25 @@ class TicketCollection {
 	 * @returns {Ticket[]}
 	 */
 	drawWinner(winnerCount) {
-		const winnerIndexs = new Array(winnerCount);
+		const winnerIndexes = new Array(winnerCount);
 		let index = 0;
 
 		while (index < winnerCount) {
 			const ticketIndex = Math.floor(Math.random() * this[tickets].length);
-			if (!winnerIndexs.includes(ticketIndex)) {
-				winnerIndexs[index++] = ticketIndex;
+			if (!winnerIndexes.includes(ticketIndex)) {
+				winnerIndexes[index++] = ticketIndex;
 				continue;
 			}
 		}
 
-		const winners = winnerIndexs.map(
+		const winners = winnerIndexes.map(
 			/**
 			 * @param {number} index
 			 */
 			(index) => this[tickets][index]
 		);
+
+		return winners;
 	}
 }
 

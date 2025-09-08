@@ -1,0 +1,54 @@
+GET http://localhost:8000/health
+
+###
+
+GET http://localhost:8000/api/v1/tickets
+
+###
+POST http://localhost:8000/api/v1/tickets
+Content-Type: application/json
+
+{
+  "username": "John Doe",
+  "price": 100
+}
+
+###
+POST http://localhost:8000/api/v1/tickets/bulk
+Content-Type: application/json
+
+{
+  "username": "Amin",
+  "price": 400,
+  "quantity": 2
+}
+
+###
+GET http://localhost:8000/api/v1/tickets/t/u_ULygJ5s
+
+###
+
+GET http://localhost:8000/api/v1/tickets/u/Hazzaz
+
+### 
+PUT http://localhost:8000/api/v1/tickets/u/Hazzaz
+Content-Type: application/json
+
+{
+  "username": "Hazzaz Abdul Mannan",
+  "price": 500
+}
+
+###
+PUT http://localhost:8000/api/v1/tickets/t/mL8unwpL-
+
+###
+
+DELETE http://localhost:8000/api/v1/tickets/t/toExUYie1_
+
+###
+
+DELETE http://localhost:8000/api/v1/tickets/u/Hazzaz
+
+###
+GET http://localhost:8000/api/v1/tickets/draw?wc=2
